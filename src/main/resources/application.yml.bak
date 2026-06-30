@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/java_practice?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: Aa123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.accountbook.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.logging.log4j.LogManager
+
+logging:
+  level:
+    com.example.accountbook: debug

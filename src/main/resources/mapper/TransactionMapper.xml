@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.accountbook.mapper.TransactionMapper">
+
+    <resultMap id="transactionMap" type="com.example.accountbook.entity.Transaction">
+        <id column="id" property="id"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="amount" property="amount"/>
+        <result column="type" property="type"/>
+        <result column="description" property="description"/>
+        <result column="transaction_date" property="transactionDate"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO transaction (category_id, amount, type, description, transaction_date)
+        VALUES (#{categoryId}, #{amount}, #{type}, #{description}, #{transactionDate})
+    </insert>
+
+    <update id="update">
+        UPDATE transaction
+        SET category_id      = #{categoryId},
+        amount           = #{amount},
+        type             = #{type},
+        description      = #{description},
+        transaction_date = #{transactionDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM transaction WHERE id = #{id}
+    </delete>
+
+    <select id="findById" resultMap="transactionMap">
+        SELECT * FROM transaction WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="transactionMap">
+        SELECT * FROM transaction ORDER BY transaction_date DESC
+    </select>
+
+    <select id="findByCategoryId" resultMap="transactionMap">
+        SELECT * FROM transaction WHERE category_id = #{categoryId} ORDER BY transaction_date DESC
+    </select>
+
+    <select id="findByType" resultMap="transactionMap">
+        SELECT * FROM transaction WHERE type = #{type} ORDER BY transaction_date DESC
+    </select>
+
+    <select id="findByDateRange" resultMap="transactionMap">
+        SELECT * FROM transaction
+        WHERE transaction_date BETWEEN #{start} AND #{end}
+        ORDER BY transaction_date DESC
+    </select>
+
+</mapper>
