@@ -25,4 +25,6 @@ public interface TransactionMapper {
 
     List<Transaction> findByDateRange(@Param("start") LocalDateTime start,
                                       @Param("end") LocalDateTime end);
+
+    Double sumMonthlyExpense();
 }

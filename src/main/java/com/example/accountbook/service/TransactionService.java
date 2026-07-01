@@ -1,5 +1,6 @@
 package com.example.accountbook.service;
 
+import com.example.accountbook.dto.TransactionDTO;
 import com.example.accountbook.entity.Transaction;
 import com.example.accountbook.mapper.TransactionMapper;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,25 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction add(Transaction transaction) {
+    public Transaction add(TransactionDTO dto) {
+        Transaction transaction = new Transaction();
+        transaction.setCategoryId(dto.getCategoryId());
+        transaction.setAmount(dto.getAmount());
+        transaction.setType(dto.getType());
+        transaction.setDescription(dto.getDescription());
+        transaction.setTransactionDate(dto.getTransactionDate());
         transactionMapper.insert(transaction);
         return transaction;
     }
 
     @Transactional
-    public Transaction update(Transaction transaction) {
+    public Transaction update(TransactionDTO dto) {
+        Transaction transaction = transactionMapper.findById(dto.getId());
+        transaction.setCategoryId(dto.getCategoryId());
+        transaction.setAmount(dto.getAmount());
+        transaction.setType(dto.getType());
+        transaction.setDescription(dto.getDescription());
+        transaction.setTransactionDate(dto.getTransactionDate());
         transactionMapper.update(transaction);
         return transaction;
     }
@@ -51,5 +64,9 @@ public class TransactionService {
 
     public List<Transaction> findByDateRange(LocalDateTime start, LocalDateTime end) {
         return transactionMapper.findByDateRange(start, end);
+    }
+
+    public Double getMonthlyExpense() {
+        return transactionMapper.sumMonthlyExpense();
     }
 }

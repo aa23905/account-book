@@ -55,4 +55,13 @@
         ORDER BY transaction_date DESC
     </select>
 
+    <select id="sumMonthlyExpense" resultType="double">
+        SELECT COALESCE(SUM(amount),0)
+        FROM transaction
+        WHERE type = 'EXPENSE'
+          AND YEAR(transaction_date) = YEAR(CURDATE())
+          AND MONTH(transaction_date) = MONTH(CURDATE())
+    </select>
+
+
 </mapper>

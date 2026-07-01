@@ -1,10 +1,14 @@
 package com.example.accountbook.controller;
 
+import com.example.accountbook.dto.ApiResponse;
+import com.example.accountbook.dto.TransactionDTO;
 import com.example.accountbook.entity.Transaction;
 import com.example.accountbook.service.TransactionService;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,48 +23,62 @@ public class TransactionController {
     }
 
     @GetMapping
-    public List<Transaction> list(@RequestParam(required = false) Long categoryId,
-                                  @RequestParam(required = false) String type,
-                                  @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-                                  LocalDateTime start,
-                                  @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-                                  LocalDateTime end) {
+    public ApiResponse<List<Transaction>> list(@RequestParam(required = false) Long categoryId,
+                                               @RequestParam(required = false) String type,
+                                               @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+                                               LocalDateTime start,
+                                               @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+                                               LocalDateTime end) {
+        List<Transaction> transactions;
         if (categoryId != null) {
-            return transactionService.findByCategoryId(categoryId);
+            transactions = transactionService.findByCategoryId(categoryId);
+        } else if (type != null) {
+            transactions = transactionService.findByType(type);
+        } else if (start != null && end != null) {
+            transactions = transactionService.findByDateRange(start, end);
+        } else {
+            transactions = transactionService.findAll();
         }
-        if (type != null) {
-            return transactionService.findByType(type);
-        }
-        if (start != null && end != null) {
-            return transactionService.findByDateRange(start, end);
-        }
-        return transactionService.findAll();
+        return ApiResponse.success(transactions);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> getById(@PathVariable Long id) {
+    public ApiResponse<Transaction> getById(@PathVariable Long id) {
         Transaction transaction = transactionService.findById(id);
         if (transaction == null) {
-            return ResponseEntity.notFound().build();
+            return ApiResponse.error(404, "Transaction not found：" + id);
         }
-        return ResponseEntity.ok(transaction);
+        return ApiResponse.success(transaction);
     }
 
     @PostMapping
-    public Transaction add(@RequestBody Transaction transaction) {
-        return transactionService.add(transaction);
+    public ApiResponse<Transaction> add(@Valid @RequestBody TransactionDTO dto) {
+        Transaction created = transactionService.add(dto);
+        return ApiResponse.success(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Transaction> update(@PathVariable Long id, @RequestBody Transaction transaction) {
-        transaction.setId(id);
-        transactionService.update(transaction);
-        return ResponseEntity.ok(transaction);
+    public ApiResponse<Transaction> update(@PathVariable Long id, @Valid @RequestBody TransactionDTO dto) {
+        dto.setId(id);
+        Transaction transaction = transactionService.update(dto);
+        return ApiResponse.success(transaction);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ApiResponse<Void> delete(@PathVariable Long id) {
+        Transaction transaction = transactionService.findById(id);
+        if (transaction == null) {
+            return ApiResponse.error(404, "Transaction not found：" + id);
+        }
         transactionService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ApiResponse.success(null);
     }
+
+    @GetMapping("/summary/monthly-expense")
+    public ApiResponse<Double> monthlyExpense() {
+        Double expense = transactionService.getMonthlyExpense();
+        return ApiResponse.success(expense);
+    }
+
+
 }
