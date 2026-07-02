@@ -15,6 +15,7 @@ public class TransactionDTO {
     @NotNull(message = "金额不能为空")
     @Positive(message = "金额必须大于0")
     private BigDecimal amount;
+    @NotNull(message = "交易类型不能为空")
     private String type;
     private String description;
     @NotNull(message = "交易日期不能为空")

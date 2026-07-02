@@ -1,9 +1,11 @@
 package com.example.accountbook.controller;
 
 import com.example.accountbook.dto.ApiResponse;
+import com.example.accountbook.dto.CategoryStatisticsDTO;
 import com.example.accountbook.dto.TransactionDTO;
 import com.example.accountbook.entity.Transaction;
 import com.example.accountbook.service.TransactionService;
+import com.github.pagehelper.PageInfo;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -80,5 +82,18 @@ public class TransactionController {
         return ApiResponse.success(expense);
     }
 
+    @GetMapping("/page")
+    public ApiResponse<PageInfo<Transaction>> page(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageInfo<Transaction> pageInfo = transactionService.findPage(page, size);
+        return ApiResponse.success(pageInfo);
+    }
+    @GetMapping("/summary/by-category")
+    public ApiResponse<List<CategoryStatisticsDTO>> expenseByCategory() {
+        List<CategoryStatisticsDTO> Stats = transactionService.getExpenseByCategory();
+        return ApiResponse.success(Stats);
+
+    }
 
 }

@@ -2,8 +2,10 @@ package com.example.accountbook.controller;
 
 import com.example.accountbook.dto.ApiResponse;
 import com.example.accountbook.dto.CategoryDTO;
+import com.example.accountbook.dto.CategoryStatisticsDTO;
 import com.example.accountbook.entity.Category;
 import com.example.accountbook.service.CategoryService;
+import com.example.accountbook.service.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +16,11 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
+    private final TransactionService transactionService;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, TransactionService transactionService) {
         this.categoryService = categoryService;
+        this.transactionService = transactionService;
     }
 
     @GetMapping
@@ -61,5 +65,7 @@ public class CategoryController {
         categoryService.delete(id);
         return ApiResponse.success(null);
     }
+
+
 
 }
