@@ -1,6 +1,6 @@
 package com.example.accountbook.mapper;
 
-import com.example.accountbook.dto.CategoryStatisticsDTO;
+import com.example.accountbook.dto.CategoryStatisticsDto;
 import com.example.accountbook.entity.Transaction;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -29,5 +29,5 @@ public interface TransactionMapper {
 
     Double sumMonthlyExpense();
 
-    List<CategoryStatisticsDTO> sumByCategory();
+    List<CategoryStatisticsDto> sumByCategory();
 }

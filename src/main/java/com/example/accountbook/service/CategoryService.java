@@ -1,6 +1,6 @@
 package com.example.accountbook.service;
 
-import com.example.accountbook.dto.CategoryDTO;
+import com.example.accountbook.dto.CategoryDto;
 import com.example.accountbook.entity.Category;
 import com.example.accountbook.mapper.CategoryMapper;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class CategoryService {
         this.categoryMapper = categoryMapper;
     }
 
-    public Category add(CategoryDTO dto) {
+    public Category add(CategoryDto dto) {
         Category category = new Category();
         category.setName(dto.getName());
         category.setType(dto.getType());
@@ -26,7 +26,7 @@ public class CategoryService {
         return category;
     }
 
-    public Category update(CategoryDTO dto) {
+    public Category update(CategoryDto dto) {
         Category category = new Category();
         category.setName(dto.getName());
         category.setType(dto.getType());

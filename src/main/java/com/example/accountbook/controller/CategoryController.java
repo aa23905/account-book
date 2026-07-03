@@ -1,8 +1,7 @@
 package com.example.accountbook.controller;
 
 import com.example.accountbook.dto.ApiResponse;
-import com.example.accountbook.dto.CategoryDTO;
-import com.example.accountbook.dto.CategoryStatisticsDTO;
+import com.example.accountbook.dto.CategoryDto;
 import com.example.accountbook.entity.Category;
 import com.example.accountbook.service.CategoryService;
 import com.example.accountbook.service.TransactionService;
@@ -44,13 +43,13 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ApiResponse<Category> add(@Valid @RequestBody CategoryDTO dto) {
+    public ApiResponse<Category> add(@Valid @RequestBody CategoryDto dto) {
         Category created = categoryService.add(dto);
         return ApiResponse.success(created);
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<Category> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO dto) {
+    public ApiResponse<Category> update(@PathVariable Long id, @Valid @RequestBody CategoryDto dto) {
         dto.setId(id);
         Category updated = categoryService.update(dto);
         return ApiResponse.success(updated);

@@ -1,7 +1,7 @@
 package com.example.accountbook.service;
 
-import com.example.accountbook.dto.CategoryStatisticsDTO;
-import com.example.accountbook.dto.TransactionDTO;
+import com.example.accountbook.dto.CategoryStatisticsDto;
+import com.example.accountbook.dto.TransactionDto;
 import com.example.accountbook.entity.Transaction;
 import com.example.accountbook.mapper.TransactionMapper;
 import com.github.pagehelper.PageHelper;
@@ -24,7 +24,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction add(TransactionDTO dto) {
+    public Transaction add(TransactionDto dto) {
         log.info("新增交易: categoryId={}, amount={}, type={}",
                 dto.getCategoryId(), dto.getAmount(), dto.getType());
         Transaction transaction = new Transaction();
@@ -38,7 +38,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction update(TransactionDTO dto) {
+    public Transaction update(TransactionDto dto) {
         log.info("更新交易: id={}", dto.getId());
         Transaction transaction = transactionMapper.findById(dto.getId());
         transaction.setCategoryId(dto.getCategoryId());
@@ -95,10 +95,20 @@ public class TransactionService {
 
     }
 
-    public List<CategoryStatisticsDTO> getExpenseByCategory() {
+    public List<CategoryStatisticsDto> getExpenseByCategory() {
         log.info("查询本月各分类支出统计");
-        List<CategoryStatisticsDTO> list = transactionMapper.sumByCategory();
+        List<CategoryStatisticsDto> list = transactionMapper.sumByCategory();
         return list;
+    }
+
+
+    public PageInfo<Transaction> findPageByCategory(int pageNum, int pageSize, Long categoryId) {
+      log.info("分页查询交易: page={}, size={}, categoryId={}", pageNum, pageSize, categoryId);
+      PageHelper.startPage(pageNum, pageSize);
+      List<Transaction> list = (categoryId != null)?
+              transactionMapper.findByCategoryId(categoryId) : transactionMapper.findAll();
+      return new PageInfo<>(list);
+
     }
 
 

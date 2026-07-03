@@ -1,14 +1,13 @@
 package com.example.accountbook.controller;
 
 import com.example.accountbook.dto.ApiResponse;
-import com.example.accountbook.dto.CategoryStatisticsDTO;
-import com.example.accountbook.dto.TransactionDTO;
+import com.example.accountbook.dto.CategoryStatisticsDto;
+import com.example.accountbook.dto.TransactionDto;
 import com.example.accountbook.entity.Transaction;
 import com.example.accountbook.service.TransactionService;
 import com.github.pagehelper.PageInfo;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -54,13 +53,13 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ApiResponse<Transaction> add(@Valid @RequestBody TransactionDTO dto) {
+    public ApiResponse<Transaction> add(@Valid @RequestBody TransactionDto dto) {
         Transaction created = transactionService.add(dto);
         return ApiResponse.success(created);
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<Transaction> update(@PathVariable Long id, @Valid @RequestBody TransactionDTO dto) {
+    public ApiResponse<Transaction> update(@PathVariable Long id, @Valid @RequestBody TransactionDto dto) {
         dto.setId(id);
         Transaction transaction = transactionService.update(dto);
         return ApiResponse.success(transaction);
@@ -82,17 +81,20 @@ public class TransactionController {
         return ApiResponse.success(expense);
     }
 
+
+    @GetMapping("/summary/by-category")
+    public ApiResponse<List<CategoryStatisticsDto>> expenseByCategory() {
+        List<CategoryStatisticsDto> Stats = transactionService.getExpenseByCategory();
+        return ApiResponse.success(Stats);
+
+    }
     @GetMapping("/page")
     public ApiResponse<PageInfo<Transaction>> page(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        PageInfo<Transaction> pageInfo = transactionService.findPage(page, size);
+            @RequestParam(defaultValue = "1")int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false)Long categoryId) {
+        PageInfo<Transaction> pageInfo = transactionService.findPageByCategory(page,size,categoryId);
         return ApiResponse.success(pageInfo);
-    }
-    @GetMapping("/summary/by-category")
-    public ApiResponse<List<CategoryStatisticsDTO>> expenseByCategory() {
-        List<CategoryStatisticsDTO> Stats = transactionService.getExpenseByCategory();
-        return ApiResponse.success(Stats);
 
     }
 

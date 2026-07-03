@@ -2,13 +2,13 @@ package com.example.accountbook.dto;
 
 import java.math.BigDecimal;
 
-public class CategoryStatisticsDTO {
+public class CategoryStatisticsDto {
 
     private String categoryName;
     private BigDecimal total;
 
-    public CategoryStatisticsDTO(){}
-    public CategoryStatisticsDTO(String categoryName, BigDecimal total) {
+    public CategoryStatisticsDto(){}
+    public CategoryStatisticsDto(String categoryName, BigDecimal total) {
         this.categoryName = categoryName;
         this.total = total;
     }

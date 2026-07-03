@@ -2,9 +2,7 @@ package com.example.accountbook.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-import java.math.BigDecimal;
-
-public class CategoryDTO {
+public class CategoryDto {
     private Long id;
     @NotBlank(message = "分类名称不能为空")
     private String name;
