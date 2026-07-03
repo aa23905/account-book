@@ -38,3 +38,13 @@ INSERT INTO category (name, type, description) VALUES
                                                    ('红包',   'INCOME', '微信红包、礼金'),
                                                    ('理财',   'INCOME', '利息、基金收益'),
                                                    ('其他收入', 'INCOME', NULL);
+
+
+CREATE TABLE `user` (
+                        `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+                        `username` VARCHAR(50) NOT NULL UNIQUE,
+                        `password` VARCHAR(255) NOT NULL,
+                        `email` VARCHAR(100),
+                        `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

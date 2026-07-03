@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class Transaction {
     private Long id;
     private Long categoryId;
+    private String categoryName;
     private BigDecimal amount;
     private String type;          // INCOME / EXPENSE
     private String description;
