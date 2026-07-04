@@ -14,3 +14,14 @@
 | ✅ 统一响应 | ApiResponse 统一包装返回格式 |
 | ✅ 全局异常处理 | @ControllerAdvice 统一拦截异常 |
 | ✅ 日志系统 | 控制台 + 文件日志，按日期滚动，保留 7 天 |
+
+## 接口一览
+
+| 方法 | 路径 | 说明 |
+  |:----:|:-----|:-----|
+| POST | `/api/auth/register` | 注册 |
+| POST | `/api/auth/login` | 登录，返回 JWT |
+| GET | `/api/categories` | 分类列表 |
+| POST | `/api/categories` | 新增分类 |
+| GET | `/api/transactions/page?pageNum=1&pageSize=10` | 分页查询 |
+| GET | `/api/transactions/summary/by-category` | 按分类统计 |
