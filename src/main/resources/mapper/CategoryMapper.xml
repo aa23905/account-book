@@ -13,8 +13,8 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO category (name, type, description)
-        VALUES (#{name}, #{type}, #{description})
+        INSERT INTO category (name, type, description,created_at)
+        VALUES (#{name}, #{type}, #{description},NOW())
     </insert>
 
     <update id="update">
@@ -22,6 +22,7 @@
         SET name        = #{name},
         type        = #{type},
         description = #{description}
+        updated_at    = NOW()
         WHERE id = #{id}
     </update>
 
